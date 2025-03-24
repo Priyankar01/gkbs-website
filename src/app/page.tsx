@@ -46,27 +46,6 @@ export default function Home() {
 				{/* Event Carousel */}
 				<section className="py-16 max-w-6xl ">
 					<h2 className="text-3xl font-bold text-red-700">Upcoming Events</h2>
-					<div className="overflow-x-auto whitespace-nowrap scrollbar-hide flex space-x-6 mt-6 p-4">
-						{upcomingEvents.length > 0 ? (
-							upcomingEvents.map((event) => (
-								<div
-									key={event.id}
-									className="bg-white shadow-lg rounded-lg p-4 min-w-[280px] flex-none border border-gray-200 hover:shadow-xl transition duration-300">
-									<img
-										src={event.image}
-										alt={event.title}
-										className="w-full h-40 object-cover rounded-md"
-									/>
-									<h3 className="text-lg font-semibold mt-3 text-gray-800">
-										{event.title}
-									</h3>
-									<p className="text-sm text-gray-600">{event.date}</p>
-								</div>
-							))
-						) : (
-							<p className="text-gray-500">No upcoming events.</p>
-						)}
-					</div>
 				</section>
 
 				{/* Announcements Section */}
