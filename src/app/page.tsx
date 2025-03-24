@@ -1,22 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
-	const [upcomingEvents, setUpcomingEvents] = useState([]);
-
-	useEffect(() => {
-		fetch('/data.json')
-			.then((res) => res.json())
-			.then((data) => {
-				const currentDate = new Date();
-				const upcoming = data.events.filter(
-					(event) => new Date(event.date) >= currentDate
-				);
-				setUpcomingEvents(upcoming);
-			});
-	}, []);
-
 	return (
 		<main className="w-full">
 			{/* Hero Section */}
