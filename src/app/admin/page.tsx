@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { FaImage, FaPlus, FaBullhorn, FaLink } from 'react-icons/fa';
+import { FaImage, FaPlus, FaBullhorn } from 'react-icons/fa';
 import * as Tabs from '@radix-ui/react-tabs';
 
 export default function AdminPanel() {

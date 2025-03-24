@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { Form } from 'radix-ui';
 
 export default function Contact() {
 	const [formData, setFormData] = useState({
@@ -25,7 +24,7 @@ export default function Contact() {
 			{/* Hero Section */}
 			<section className="text-center">
 				<h1 className="text-4xl font-bold text-red-700">Contact Us</h1>
-				<p className="mt-2 text-lg">We'd love to hear from you!</p>
+				<p className="mt-2 text-lg">We&apos;d love to hear from you!</p>
 			</section>
 
 			{/* Contact Info */}
