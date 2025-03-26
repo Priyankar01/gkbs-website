@@ -9,10 +9,12 @@ import {
 	limit,
 	startAfter,
 } from 'firebase/firestore';
+import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 
 export default function Gallery() {
 	const [images, setImages] = useState<string[]>([]);
-	const [lastVisible, setLastVisible] = useState<any>(null);
+	const [lastVisible, setLastVisible] =
+		useState<QueryDocumentSnapshot<DocumentData> | null>(null);
 	const [hasMore, setHasMore] = useState(true);
 	const imagesPerPage = 18;
 
