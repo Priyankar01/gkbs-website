@@ -1,29 +1,66 @@
 export default function About() {
-	const members = [
-		{ name: 'John Doe', designation: 'President', image: '/john.jpg' },
-		{ name: 'Jane Smith', designation: 'Vice President', image: '/jane.jpg' },
-		{ name: 'Michael Lee', designation: 'Secretary', image: '/michael.jpg' },
-		{ name: 'Emily Davis', designation: 'Treasurer', image: '/emily.jpg' },
-		{ name: 'Daniel Brown', designation: 'Member', image: '/daniel.jpg' },
-		{ name: 'Sophia Wilson', designation: 'Member', image: '/sophia.jpg' },
+	const members: Member[] = [
+		{
+			id: '1',
+			name: 'John Doe',
+			designation: 'President',
+			imageUrl: '/john.jpg',
+		},
+		{
+			id: '2',
+			name: 'Jane Smith',
+			designation: 'Vice President',
+			imageUrl: '/jane.jpg',
+		},
+		{
+			id: '3',
+			name: 'Michael Lee',
+			designation: 'Secretary',
+			imageUrl: '/michael.jpg',
+		},
+		{
+			id: '4',
+			name: 'Emily Davis',
+			designation: 'Treasurer',
+			imageUrl: '/emily.jpg',
+		},
+		{
+			id: '5',
+			name: 'Daniel Brown',
+			designation: 'Member',
+			imageUrl: '/daniel.jpg',
+		},
+		{
+			id: '6',
+			name: 'Sophia Wilson',
+			designation: 'Member',
+			imageUrl: '/sophia.jpg',
+		},
 	];
 
-	const ProfileCard = ({ member }) => {
+	interface Member {
+		id: string;
+		name: string;
+		designation: string;
+		imageUrl?: string;
+	}
+
+	const ProfileCard = ({ member }: { member: Member }) => {
 		return (
 			<div className="bg-white shadow-lg rounded-2xl p-4 text-center">
-				{/* <Image
-					src={member.image}
-					alt={member.name}
-					width={100}
-					height={100}
-					className="rounded-full mx-auto mb-2"
-				/> */}
-				<div className="rounded-full mx-auto mb-2"></div>
-				<h3 className="text-lg font-semibold">{member.name}</h3>
-				<p className="text-gray-600 text-sm">{member.designation}</p>
+				{member.imageUrl && (
+					<img
+						src={member.imageUrl}
+						alt={member.name}
+						className="w-20 h-20 mx-auto rounded-full"
+					/>
+				)}
+				<h3 className="text-lg font-bold mt-2">{member.name}</h3>
+				<p className="text-sm text-gray-500">{member.designation}</p>
 			</div>
 		);
 	};
+
 	return (
 		<main className="max-w-5xl mx-auto px-4 py-10 text-gray text-center flex flex-col align-middle justify-center">
 			{/* Hero Section */}
