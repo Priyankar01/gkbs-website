@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { db } from '@/firebaseConfig';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
 
 export default function TestFirestore() {
 	interface FirestoreData {
@@ -21,7 +21,7 @@ export default function TestFirestore() {
 			await addDoc(collection(db, 'testCollection'), {
 				name: 'Test Event',
 				description: 'This is a test Firestore event',
-				date: new Date().toISOString(),
+				date: Timestamp.fromDate(new Date()), // Store as Firestore Timestamp
 			});
 			alert('Test data added!');
 			fetchData(); // Fetch new data after adding
@@ -33,11 +33,16 @@ export default function TestFirestore() {
 
 	// Function to fetch test data
 	const fetchData = async () => {
-		const querySnapshot = await getDocs(collection(db, 'yourCollection'));
+		const querySnapshot = await getDocs(collection(db, 'testCollection'));
 
-		const data = querySnapshot.docs.map((doc) => {
-			const { id, ...docData } = doc.data(); // Remove existing `id`
-			return { id: doc.id, ...docData };
+		const data: FirestoreData[] = querySnapshot.docs.map((doc) => {
+			const docData = doc.data();
+			return {
+				id: doc.id, // Firestore's document ID
+				name: docData.name || 'Unknown Name', // Ensure it exists
+				description: docData.description || 'No Description',
+				date: docData.date || { seconds: 0 }, // Default Firestore Timestamp
+			};
 		});
 
 		setData(data);
