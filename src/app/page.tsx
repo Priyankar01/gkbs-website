@@ -19,7 +19,7 @@ export default function Home() {
 						community service.
 					</p>
 					<Link href="/about">
-						<button className="mt-6 px-8 py-3 bg-red-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-black hover:cursor-pointer transition duration-200 border-1">
+						<button className="mt-6 px-8 py-3 bg-[#EF233C] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-black hover:cursor-pointer transition duration-200 border-1">
 							Know More
 						</button>
 					</Link>

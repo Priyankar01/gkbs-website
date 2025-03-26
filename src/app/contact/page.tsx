@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Contact() {
 	const [formData, setFormData] = useState({
@@ -29,20 +30,19 @@ export default function Contact() {
 
 			{/* Contact Info */}
 			<section className="mt-10 text-center">
-				<p>
-					<strong>📍 Address:</strong> Ghaziabad, Uttar Pradesh, India
+				<p className="flex justify-center items-center gap-1">
+					<FaMapMarkerAlt />
+					Ghaziabad, Uttar Pradesh, India
 				</p>
-				<p>
-					<strong>📞 Phone:</strong> +91 XXXXXXXXXX
-				</p>
-				<p>
-					<strong>📧 Email:</strong> info@gkbs.com
+				<p className="flex justify-center items-center gap-1">
+					<FaPhoneAlt />
+					Phone: +91 XXXXXXXXXX
 				</p>
 			</section>
 
 			{/* Contact Form */}
 			<section className="mt-10">
-				<h2 className="text-2xl font-semibold text-red-700 text-center">
+				<h2 className="text-2xl font-semibold text-red-700 text-center ">
 					Send Us a Message
 				</h2>
 				<form
@@ -76,7 +76,7 @@ export default function Contact() {
 						required></textarea>
 					<button
 						type="submit"
-						className="w-full bg-red-500 text-white py-2 rounded hover:bg-white hover:text-black border-1">
+						className="w-full bg-red-500 text-white py-2 rounded hover:bg-white hover:text-black border-1 hover:cursor-pointer">
 						Send Message
 					</button>
 				</form>
