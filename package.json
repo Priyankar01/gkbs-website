@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
+    "firebase": "^11.5.0",
     "flowbite": "^3.1.2",
     "lucide": "^0.483.0",
     "lucide-react": "^0.483.0",
