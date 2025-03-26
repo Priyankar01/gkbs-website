@@ -4,8 +4,16 @@ import { db } from '@/firebaseConfig';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export default function Events() {
-	const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
-	const [pastEvents, setPastEvents] = useState<any[]>([]);
+	interface EventData {
+		id: string;
+		title: string;
+		description: string;
+		date: { seconds: number };
+		imageUrl?: string;
+	}
+
+	const [upcomingEvents, setUpcomingEvents] = useState<EventData[]>([]);
+	const [pastEvents, setPastEvents] = useState<EventData[]>([]);
 
 	useEffect(() => {
 		const fetchEvents = async () => {
