@@ -25,13 +25,17 @@ export default function Events() {
 				const querySnapshot = await getDocs(eventsQuery);
 
 				const now = new Date();
-				const upcoming = [];
-				const past = [];
+				const upcoming: EventData[] = [];
+				const past: EventData[] = [];
 
 				querySnapshot.docs.forEach((doc) => {
-					const event = { id: doc.id, ...doc.data() };
-					console.log('Fetched Event:', event); // Log all event data
-					const eventDate = new Date(event.date.seconds * 1000);
+					const event = { id: doc.id, ...doc.data() } as EventData;
+					console.log('Fetched Event:', event);
+
+					// Ensure event.date.seconds exists
+					const eventDate = event.date?.seconds
+						? new Date(event.date.seconds * 1000)
+						: new Date();
 
 					if (eventDate > now) {
 						upcoming.push(event);
@@ -61,7 +65,7 @@ export default function Events() {
 
 			{/* Upcoming Events */}
 			<section className="mt-10">
-				<h2 className="text-2xl font-semibold text-red-700">Past Events</h2>
+				<h2 className="text-2xl font-semibold text-red-700">Upcoming Events</h2>
 				{upcomingEvents.length > 0 ? (
 					upcomingEvents.map((event) => (
 						<div
@@ -72,18 +76,15 @@ export default function Events() {
 									src={event.imageUrl}
 									alt={event.title}
 									className="w-full h-48 object-cover rounded mb-4"
-									onLoad={() => console.log('Image Loaded:', event.imageUrl)}
-									onError={() =>
-										console.error('Image Load Failed:', event.imageUrl)
-									}
 								/>
 							) : (
 								<p className="text-gray-500 text-sm">No image available</p>
 							)}
-
 							<h3 className="text-xl font-bold text-red-600">{event.title}</h3>
 							<p className="text-gray-500 text-sm">
-								{new Date(event.date.seconds * 1000).toLocaleDateString()}
+								{event.date?.seconds
+									? new Date(event.date.seconds * 1000).toLocaleDateString()
+									: 'Unknown Date'}
 							</p>
 							<p className="mt-2">{event.description}</p>
 						</div>
@@ -106,18 +107,15 @@ export default function Events() {
 									src={event.imageUrl}
 									alt={event.title}
 									className="w-full h-48 object-cover rounded mb-4"
-									onLoad={() => console.log('Image Loaded:', event.imageUrl)}
-									onError={() =>
-										console.error('Image Load Failed:', event.imageUrl)
-									}
 								/>
 							) : (
 								<p className="text-gray-500 text-sm">No image available</p>
 							)}
-
 							<h3 className="text-xl font-bold text-red-600">{event.title}</h3>
 							<p className="text-gray-500 text-sm">
-								{new Date(event.date.seconds * 1000).toLocaleDateString()}
+								{event.date?.seconds
+									? new Date(event.date.seconds * 1000).toLocaleDateString()
+									: 'Unknown Date'}
 							</p>
 							<p className="mt-2">{event.description}</p>
 						</div>
