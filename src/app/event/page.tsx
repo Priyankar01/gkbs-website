@@ -40,9 +40,6 @@ export default function Events() {
 					}
 				});
 
-				console.log('Upcoming Events:', upcoming); // Debug upcoming events
-				console.log('Past Events:', past); // Debug past events
-
 				setUpcomingEvents(upcoming);
 				setPastEvents(past);
 			} catch (error) {
