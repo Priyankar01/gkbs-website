@@ -1,7 +1,50 @@
 'use client';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { db } from '@/firebaseConfig';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+
+interface Announcement {
+	id: string;
+	title: string;
+	description: string;
+	createdAt: { seconds: number }; // Firestore timestamp
+}
 
 export default function Home() {
+	const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+	useEffect(() => {
+		const fetchAnnouncements = async () => {
+			try {
+				const announcementsQuery = query(
+					collection(db, 'announcements'),
+					orderBy('createdAt', 'desc')
+				);
+				const querySnapshot = await getDocs(announcementsQuery);
+
+				console.log('Fetched announcements count:', querySnapshot.docs.length); //display the fetched items
+
+				const fetchedAnnouncements: Announcement[] = querySnapshot.docs.map(
+					(doc) => {
+						const data = doc.data() as Omit<Announcement, 'id'>; // Exclude 'id' from data
+						return {
+							id: doc.id,
+							...data,
+						};
+					}
+				);
+
+				console.log('Fetched Announcements:', fetchedAnnouncements);
+				setAnnouncements(fetchedAnnouncements);
+			} catch (error) {
+				console.error('Error fetching announcements:', error);
+			}
+		};
+
+		fetchAnnouncements();
+	}, []);
+
 	return (
 		<main className="w-full">
 			{/* Hero Section */}
@@ -26,7 +69,6 @@ export default function Home() {
 				</div>
 			</section>
 
-			{/* Rest of the content can stay inside a container */}
 			<section className="max-w-6xl mx-auto px-6 py-16">
 				{/* Event Carousel */}
 				<section className="py-16 max-w-6xl ">
@@ -34,28 +76,30 @@ export default function Home() {
 				</section>
 
 				{/* Announcements Section */}
-				<section className="py-16 max-w-6xl ">
-					<h2 className="text-3xl font-bold text-red-700">Announcements</h2>
-					<div className="bg-gray-100 p-6 mt-6 h-40 overflow-y-auto space-y-3 rounded-lg shadow-md border border-gray-200">
-						<div className="border-b pb-2 text-gray-700">
-							🔔 Temple will remain open till 10 PM during Durga Puja.
-						</div>
-						<div className="border-b pb-2 text-gray-700">
-							📢 Community meeting scheduled for next Sunday.
-						</div>
-						<div className="border-b pb-2 text-gray-700">
-							🛕 Special prayer session on Ekadashi.
-						</div>
-						<div className="border-b pb-2 text-gray-700">
-							🎉 Annual cultural program next month.
-						</div>
-						<div className="border-b pb-2 text-gray-700">
-							🙏 Free health check-up camp at the temple on Saturday.
-						</div>
-						<div className="text-red-600 hover:underline cursor-pointer font-medium">
-							View all announcements →
-						</div>
-					</div>
+				<section className=" p-4  mb-6">
+					<h2 className="text-2xl font-bold text-red-600 mb-4">
+						Announcements
+					</h2>
+					{announcements.length > 0 ? (
+						<ul className="bg-red-100 shadow-md rounded-lg   pl-2">
+							{announcements.map((announcement) => (
+								<li
+									key={announcement.id}
+									className=" py-4 flex items-center gap-2">
+									<h3 className="text-lg font-semibold">
+										{announcement.title}
+									</h3>
+									<p className="text-sm text-gray-400">
+										{new Date(
+											announcement.createdAt.seconds * 1000
+										).toLocaleDateString()}
+									</p>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p className="text-gray-500">No announcements available.</p>
+					)}
 				</section>
 			</section>
 		</main>

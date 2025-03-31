@@ -1,162 +1,82 @@
 'use client';
-import { useState } from 'react';
-import { FaImage, FaPlus, FaBullhorn } from 'react-icons/fa';
-import * as Tabs from '@radix-ui/react-tabs';
+import { useEffect, useState } from 'react';
+import { auth } from '@/firebaseConfig';
+import { useRouter } from 'next/navigation';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import Announcements from '../../components/Announcements';
+import Events from '../../components/Events';
+import Gallery from '../../components/Gallery';
 
-export default function AdminPanel() {
-	const [imageSource, setImageSource] = useState('url');
-	const [galleryImageSource, setGalleryImageSource] = useState('url');
+export default function AdminDashboard() {
+	
+	const [user, setUser] = useState(null);
+	const [activeTab, setActiveTab] = useState('announcements');
+	const router = useRouter();
+
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			if (!currentUser) {
+				router.push('/admin/login'); // Redirect if not logged in
+			} else {
+				setUser(currentUser);
+			}
+		});
+
+		return () => unsubscribe();
+	}, [router]);
+
+	const handleLogout = async () => {
+		await signOut(auth);
+		router.push('/admin/login');
+	};
 
 	return (
-		<main className="max-w-4xl mx-auto px-6 py-10 text-gray-800 bg-white shadow-lg rounded-lg">
-			<h1 className="text-4xl font-bold text-red-700 text-center mb-8">
-				Admin Panel
-			</h1>
+		<div className="p-8">
+			<h1 className="text-3xl font-bold text-red-600">Admin Dashboard</h1>
+			<p className="mt-2">Welcome, {user?.email}</p>
+			<button
+				onClick={handleLogout}
+				className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:cursor-pointer">
+				Logout
+			</button>
 
-			<Tabs.Root defaultValue="events" className="w-full">
-				<Tabs.List className="flex justify-center mb-8 space-x-6 border-b-2 pb-3">
-					{[
-						{ label: 'Manage Events', value: 'events' },
-						{ label: 'Manage Gallery', value: 'gallery' },
-						{ label: 'Manage Announcements', value: 'announcements' },
-					].map(({ label, value }) => (
-						<Tabs.Trigger
-							key={value}
-							value={value}
-							className="px-6 py-2 text-lg font-semibold rounded-t-md transition-all duration-300 data-[state=active]:text-red-600 data-[state=active]:border-b-4 data-[state=active]:border-red-600 hover:text-red-500">
-							{label}
-						</Tabs.Trigger>
-					))}
-				</Tabs.List>
+			{/* Tabs for switching sections */}
+			<div className="flex space-x-4 mt-6">
+				<button
+					className={`py-2 px-4 rounded ${
+						activeTab === 'announcements'
+							? 'bg-blue-600 text-white'
+							: 'bg-gray-300 hover:cursor-pointer'
+					}`}
+					onClick={() => setActiveTab('announcements')}>
+					Announcements
+				</button>
+				<button
+					className={`py-2 px-4 rounded ${
+						activeTab === 'events'
+							? 'bg-blue-600 text-white'
+							: 'bg-gray-300 hover:cursor-pointer'
+					}`}
+					onClick={() => setActiveTab('events')}>
+					Events
+				</button>
+				<button
+					className={`py-2 px-4 rounded ${
+						activeTab === 'gallery'
+							? 'bg-blue-600 text-white'
+							: 'bg-gray-300 hover:cursor-pointer'
+					}`}
+					onClick={() => setActiveTab('gallery')}>
+					Gallery
+				</button>
+			</div>
 
-				<div className="p-6 bg-gray-50 rounded-b-lg">
-					<Tabs.Content value="events">
-						<h2 className="text-2xl font-semibold text-red-700 mb-4">
-							Add New Event
-						</h2>
-						<div className="space-y-4">
-							<input
-								required
-								type="text"
-								placeholder="Event Title"
-								className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"
-							/>
-							<input
-								required
-								type="date"
-								className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"
-							/>
-							<textarea
-								required
-								placeholder="Event Description"
-								className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"></textarea>
-							<div className="flex space-x-4">
-								<button
-									onClick={() => setImageSource('url')}
-									className={`px-4 py-2 text-sm font-semibold rounded ${
-										imageSource === 'url'
-											? 'bg-red-600 text-white'
-											: 'bg-gray-300'
-									}`}>
-									Use URL
-								</button>
-								<button
-									onClick={() => setImageSource('upload')}
-									className={`px-4 py-2 text-sm font-semibold rounded ${
-										imageSource === 'upload'
-											? 'bg-red-600 text-white'
-											: 'bg-gray-300'
-									}`}>
-									Upload Image
-								</button>
-							</div>
-							{imageSource === 'url' ? (
-								<input
-									required
-									type="text"
-									placeholder="Image URL"
-									className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"
-								/>
-							) : (
-								<input
-									required
-									type="file"
-									className="w-full p-3 border border-gray-300 bg-gray-200 rounded focus:ring-2 focus:ring-red-500"
-								/>
-							)}
-							<button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 flex justify-center items-center gap-2 transition duration-300">
-								<FaPlus /> Add Event
-							</button>
-						</div>
-					</Tabs.Content>
-
-					<Tabs.Content value="gallery">
-						<h2 className="text-2xl font-semibold text-red-700 mb-4">
-							Add Image to Gallery
-						</h2>
-						<div className="space-y-4">
-							<div className="flex space-x-4">
-								<button
-									onClick={() => setGalleryImageSource('url')}
-									className={`px-4 py-2 text-sm font-semibold rounded ${
-										galleryImageSource === 'url'
-											? 'bg-red-600 text-white'
-											: 'bg-gray-300'
-									}`}>
-									Use URL
-								</button>
-								<button
-									onClick={() => setGalleryImageSource('upload')}
-									className={`px-4 py-2 text-sm font-semibold rounded ${
-										galleryImageSource === 'upload'
-											? 'bg-red-600 text-white'
-											: 'bg-gray-300'
-									}`}>
-									Upload Image
-								</button>
-							</div>
-							{galleryImageSource === 'url' ? (
-								<input
-									required
-									type="text"
-									placeholder="Image URL"
-									className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"
-								/>
-							) : (
-								<input
-									required
-									type="file"
-									className="w-full p-3 border border-gray-300 bg-gray-200 rounded focus:ring-2 focus:ring-red-500"
-								/>
-							)}
-							<button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 flex justify-center items-center gap-2 transition duration-300">
-								<FaImage /> Add Image
-							</button>
-						</div>
-					</Tabs.Content>
-
-					<Tabs.Content value="announcements">
-						<h2 className="text-2xl font-semibold text-red-700 mb-4">
-							Add New Announcement
-						</h2>
-						<div className="space-y-4">
-							<input
-								required
-								type="text"
-								placeholder="Announcement Title"
-								className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"
-							/>
-							<textarea
-								required
-								placeholder="Announcement Details"
-								className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500"></textarea>
-							<button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 flex justify-center items-center gap-2 transition duration-300">
-								<FaBullhorn /> Add Announcement
-							</button>
-						</div>
-					</Tabs.Content>
-				</div>
-			</Tabs.Root>
-		</main>
+			{/* Show the selected section */}
+			<div className="mt-6">
+				{activeTab === 'announcements' && <Announcements />}
+				{activeTab === 'events' && <Events />}
+				{activeTab === 'gallery' && <Gallery />}
+			</div>
+		</div>
 	);
 }
