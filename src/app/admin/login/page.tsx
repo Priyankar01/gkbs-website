@@ -18,6 +18,7 @@ const LoginPage = () => {
 			await signInWithEmailAndPassword(auth, email, password);
 			router.push('/admin');
 		} catch (err) {
+			console.log(err);
 			setError('Failed to login. Please check your credentials.');
 		}
 	};
