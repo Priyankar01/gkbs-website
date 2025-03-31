@@ -1,8 +1,8 @@
 'use client';
+import { db } from '@/utils/firebaseConfig';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { db } from '@/firebaseConfig';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 interface Announcement {
 	id: string;

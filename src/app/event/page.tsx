@@ -1,7 +1,7 @@
 'use client';
+import { db } from '@/utils/firebaseConfig';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { db } from '@/firebaseConfig';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export default function Events() {
 	interface EventData {

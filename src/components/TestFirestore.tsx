@@ -1,7 +1,7 @@
 'use client';
+import { db } from '@/utils/firebaseConfig';
+import { addDoc, collection, getDocs, Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { db } from '@/firebaseConfig';
-import { collection, addDoc, getDocs, Timestamp } from 'firebase/firestore';
 
 export default function TestFirestore() {
 	interface FirestoreData {

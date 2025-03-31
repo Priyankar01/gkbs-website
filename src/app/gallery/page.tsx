@@ -1,15 +1,16 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { db } from '@/firebaseConfig';
+import { db } from '@/utils/firebaseConfig';
 import {
 	collection,
+	DocumentData,
 	getDocs,
-	query,
-	orderBy,
 	limit,
+	orderBy,
+	query,
+	QueryDocumentSnapshot,
 	startAfter,
 } from 'firebase/firestore';
-import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 export default function Gallery() {
 	const [images, setImages] = useState<string[]>([]);
