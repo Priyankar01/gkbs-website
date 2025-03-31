@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import GalleryUpload from '@/components/GalleryUpload';
+import GalleryUpload from '@/components/Upload';
 
 const AdminGallery = () => {
 	const [images, setImages] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [page, setPage] = useState(1);
+	// const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		fetchImages();
