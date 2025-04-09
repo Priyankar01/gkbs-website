@@ -10,7 +10,6 @@ interface Images {
 	imageUrl: string;
 }
 export default function Gallery() {
-	const router = useRouter();
 	const [images, setImages] = useState<Images[]>([]);
 
 	// To Fetch the images from gallery
