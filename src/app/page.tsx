@@ -3,6 +3,7 @@ import { db } from '@/utils/firebaseConfig';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { CldUploadButton } from 'next-cloudinary';
 
 interface Announcement {
 	id: string;
@@ -44,6 +45,7 @@ export default function Home() {
 
 		fetchAnnouncements();
 	}, []);
+	// const [imageUrl, setImageUrl] = useState('');
 
 	return (
 		<main className="w-full">
@@ -74,6 +76,14 @@ export default function Home() {
 				<section className="py-16 max-w-6xl ">
 					<h2 className="text-3xl font-bold text-red-700">Upcoming Events</h2>
 				</section>
+
+				<CldUploadButton
+					uploadPreset="gkbs-preset"
+					onSuccess={(result) => {
+						console.log('Upload success:', result.info);
+					}}
+					className="mt-6 px-8 py-3 bg-[#EF233C] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-black hover:cursor-pointer transition duration-200 border-1"
+				/>
 
 				{/* Announcements Section */}
 				<section className=" p-4  mb-6">

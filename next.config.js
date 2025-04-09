@@ -6,4 +6,7 @@ module.exports = {
 		});
 		return config;
 	},
+	images: {
+		domains: ['www.holidify.com', 'res.cloudinary.com', 'cdn.example.org'], // Add as needed
+	},
 };

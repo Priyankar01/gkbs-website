@@ -1,74 +1,43 @@
 'use client';
 import { db } from '@/utils/firebaseConfig';
-import {
-	collection,
-	DocumentData,
-	getDocs,
-	limit,
-	orderBy,
-	query,
-	QueryDocumentSnapshot,
-	startAfter,
-} from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
+interface Images {
+	id: string;
+	imageUrl: string;
+}
 export default function Gallery() {
-	const [images, setImages] = useState<string[]>([]);
-	const [lastVisible, setLastVisible] =
-		useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-	const [hasMore, setHasMore] = useState(true);
-	const imagesPerPage = 18;
-
-	// Fetch initial images
+	const [images, setImages] = useState<Images[]>([]);
 	useEffect(() => {
-		const fetchInitialImages = async () => {
+		const fetchImages = async () => {
 			try {
-				const galleryQuery = query(
-					collection(db, 'gallery'),
-					orderBy('imageUrl'),
-					limit(imagesPerPage)
+				const imagesQuery = query(
+					collection(db, 'gallery')
+					// orderBy('id', 'imageUrl')
 				);
-				const querySnapshot = await getDocs(galleryQuery);
+				const querySnapshot = await getDocs(imagesQuery);
 
-				if (!querySnapshot.empty) {
-					setImages(querySnapshot.docs.map((doc) => doc.data().imageUrl));
-					setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
-				} else {
-					setHasMore(false);
-				}
+				console.log('Fetched images count:', querySnapshot.docs.length); //display the fetched items
+
+				const fetchedImages: Images[] = querySnapshot.docs.map((doc) => {
+					const data = doc.data() as Omit<Images, 'id'>; // Exclude 'id' from data
+					return {
+						id: doc.id,
+						...data,
+					};
+				});
+
+				console.log('Fetched Images:', fetchedImages);
+				setImages(fetchedImages);
 			} catch (error) {
-				console.error('Error fetching gallery images:', error);
+				console.error('Error fetching announcements:', error);
 			}
 		};
-		fetchInitialImages();
+
+		fetchImages();
 	}, []);
-
-	// Load more images
-	const fetchMoreImages = async () => {
-		if (!lastVisible) return;
-
-		try {
-			const galleryQuery = query(
-				collection(db, 'gallery'),
-				orderBy('imageUrl'),
-				startAfter(lastVisible),
-				limit(imagesPerPage)
-			);
-			const querySnapshot = await getDocs(galleryQuery);
-
-			if (!querySnapshot.empty) {
-				setImages((prev) => [
-					...prev,
-					...querySnapshot.docs.map((doc) => doc.data().imageUrl),
-				]);
-				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
-			} else {
-				setHasMore(false);
-			}
-		} catch (error) {
-			console.error('Error fetching more images:', error);
-		}
-	};
 
 	return (
 		<main className="max-w-5xl mx-auto px-4 py-10 text-gray-800">
@@ -87,38 +56,22 @@ export default function Gallery() {
 				</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
 					{images.length > 0 ? (
-						images.map((imageUrl, index) => (
-							<div
-								key={index}
-								className="relative w-full h-40 bg-gray-300 rounded overflow-hidden shadow-md hover:scale-110 transition-all duration-200">
-								<img
-									src={imageUrl}
-									alt={`Gallery Image ${index + 1}`}
-									className="w-full h-full object-cover"
-								/>
-							</div>
-						))
+						<ul className="bg-red-100 shadow-md rounded-lg pl-2">
+							{images.map((image) => (
+								<li key={image.id} className=" py-4 flex items-center gap-2">
+									<Image
+										src={image.imageUrl}
+										width={500}
+										height={500}
+										alt="Picture of the author"
+									/>
+								</li>
+							))}
+						</ul>
 					) : (
-						<p className="text-center text-gray-600 col-span-full">
-							No images available.
-						</p>
+						<p className="text-gray-500">No Images available.</p>
 					)}
 				</div>
-
-				{/* Load More Button */}
-				{hasMore ? (
-					<div className="flex justify-center mt-6">
-						<button
-							onClick={fetchMoreImages}
-							className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-700 transition">
-							Load More
-						</button>
-					</div>
-				) : (
-					<p className="text-center text-gray-500 mt-4">
-						🎉 You&apos;ve reached the end of the gallery! 🎉
-					</p>
-				)}
 			</section>
 		</main>
 	);
