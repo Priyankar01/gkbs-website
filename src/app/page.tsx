@@ -51,7 +51,9 @@ export default function Home() {
 			{/* Hero Section */}
 			<section className="relative w-full h-screen flex items-end justify-center text-center pb-30">
 				{/* Background Image with Blur */}
-				<div className="absolute inset-0 bg-[url('/hero.jpg')] bg-cover bg-center brightness-50 blur-xs -z-10"></div>
+				{/* <div className="absolute inset-0 bg-[url('/hero.jpg')] bg-cover bg-center brightness-50 blur-xs -z-10"></div> */}
+
+				<div className="absolute inset-0 -z-10 bg-cover bg-center brightness-50 blur-xs bg-[url('/hero-mobile.jpg')] sm:bg-[url('/hero.jpg')]"></div>
 
 				{/* Text Overlay */}
 				<div className="relative z-10 text-white px-6">

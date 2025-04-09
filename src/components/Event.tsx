@@ -97,7 +97,7 @@ const EventComponent = () => {
 		if (!confirm('Are you sure you want to delete this announcement?')) return;
 
 		try {
-			await deleteDoc(doc(db, 'announcements', id));
+			await deleteDoc(doc(db, 'events', id));
 			setEvents((prev) => prev.filter((a) => a.id !== id));
 		} catch (error) {
 			console.error('Error deleting announcement:', error);
