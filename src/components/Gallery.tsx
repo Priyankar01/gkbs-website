@@ -49,15 +49,17 @@ export default function Gallery() {
 				uploadPreset="gkbs-preset"
 				onSuccess={async (result) => {
 					try {
-						const url = result.info.secure_url;
+						if (!result.info || !result.info?.secure_url) {
+							console.error('Upload result does not contain expected info.');
+							return;
+						}
+
+						const url = result.info?.secure_url;
 						await addDoc(collection(db, 'gallery'), {
 							imageUrl: url,
 						});
-						console.log(url);
-						console.log('Image added successfully!', url);
-						router.refresh();
 					} catch (error) {
-						console.error('Error adding image: ', error);
+						console.error('Error uploading image:', error);
 					}
 				}}
 				className="mt-6 px-8 py-3 bg-[#EF233C] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-black hover:cursor-pointer transition duration-200 border-1"
