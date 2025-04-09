@@ -3,7 +3,6 @@ import { collection, getDocs, query, addDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { CldUploadButton } from 'next-cloudinary';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 interface Images {
 	id: string;
