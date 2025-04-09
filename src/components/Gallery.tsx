@@ -47,16 +47,26 @@ export default function Gallery() {
 				uploadPreset="gkbs-preset"
 				onSuccess={async (result) => {
 					try {
+						// First, ensure result is an object and has "info"
 						if (
 							typeof result !== 'object' ||
-							!('info' in result) ||
-							!result.info?.secure_url
+							result === null ||
+							!('info' in result)
 						) {
 							console.error('Upload result does not contain expected info.');
 							return;
 						}
 
-						const url = result.info?.secure_url;
+						// Now safely assert type and access secure_url
+						const uploadResult = result as { info: { secure_url?: string } };
+
+						if (!uploadResult.info.secure_url) {
+							console.error('secure_url not found in upload result.');
+							return;
+						}
+
+						const url = uploadResult.info.secure_url;
+
 						await addDoc(collection(db, 'gallery'), {
 							imageUrl: url,
 						});
