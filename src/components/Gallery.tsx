@@ -47,7 +47,11 @@ export default function Gallery() {
 				uploadPreset="gkbs-preset"
 				onSuccess={async (result) => {
 					try {
-						if (!result.info || !result.info?.secure_url) {
+						if (
+							typeof result !== 'object' ||
+							!('info' in result) ||
+							!result.info?.secure_url
+						) {
 							console.error('Upload result does not contain expected info.');
 							return;
 						}
@@ -57,7 +61,7 @@ export default function Gallery() {
 							imageUrl: url,
 						});
 					} catch (error) {
-						console.error('Error uploading image:', error);
+						console.error('Error uploading image to Firestore:', error);
 					}
 				}}
 				className="mt-6 px-8 py-3 bg-[#EF233C] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-black hover:cursor-pointer transition duration-200 border-1"
