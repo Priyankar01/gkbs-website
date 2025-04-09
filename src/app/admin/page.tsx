@@ -7,6 +7,7 @@ import { auth } from '@/utils/firebaseConfig';
 import { User } from 'firebase/auth'; // Import User type from Firebase auth
 import EventComponent from '../../components/Event'; // Adjust path if necessary
 import GalleryComponent from '../../components/Gallery';
+import AnnouncementsComponent from '../../components/Announcements';
 
 const AdminPage = () => {
 	const [user, setUser] = useState<User | null>(null);
@@ -34,7 +35,7 @@ const AdminPage = () => {
 	return (
 		<div>
 			{user ? (
-				<section className='max-w mx-auto'>
+				<section className="max-w mx-auto">
 					<h2 className="flex justify-center items-center max-w-sm mx-auto gap-4  m-2">
 						Welcome, {user.displayName || user.email}
 						<button
@@ -64,12 +65,12 @@ const AdminPage = () => {
 
 					<div>
 						{activeTab === 'events' && <EventComponent />}
-						{activeTab === 'announcements' && <h3>Announcements Content</h3>}
+						{activeTab === 'announcements' && <AnnouncementsComponent />}
 						{activeTab === 'gallery' && <GalleryComponent />}
 					</div>
 				</section>
 			) : (
-				<p>Loading...</p>
+				<p className="max-w mx-auto">Loading...</p>
 			)}
 		</div>
 	);

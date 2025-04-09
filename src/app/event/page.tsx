@@ -9,7 +9,6 @@ export default function Events() {
 		title: string;
 		description: string;
 		date: { seconds: number };
-		imageUrl?: string;
 	}
 
 	const [upcomingEvents, setUpcomingEvents] = useState<EventData[]>([]);
@@ -71,15 +70,6 @@ export default function Events() {
 						<div
 							key={event.id}
 							className="border rounded-lg p-4 shadow-md mb-6">
-							{event.imageUrl ? (
-								<img
-									src={event.imageUrl}
-									alt={event.title}
-									className="w-full h-48 object-cover rounded mb-4"
-								/>
-							) : (
-								<p className="text-gray-500 text-sm">No image available</p>
-							)}
 							<h3 className="text-xl font-bold text-red-600">{event.title}</h3>
 							<p className="text-gray-500 text-sm">
 								{event.date?.seconds
@@ -102,15 +92,6 @@ export default function Events() {
 						<div
 							key={event.id}
 							className="border rounded-lg p-4 shadow-md mb-6">
-							{event.imageUrl ? (
-								<img
-									src={event.imageUrl}
-									alt={event.title}
-									className="w-full h-48 object-cover rounded mb-4"
-								/>
-							) : (
-								<p className="text-gray-500 text-sm">No image available</p>
-							)}
 							<h3 className="text-xl font-bold text-red-600">{event.title}</h3>
 							<p className="text-gray-500 text-sm">
 								{event.date?.seconds
