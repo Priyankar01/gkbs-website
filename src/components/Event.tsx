@@ -20,13 +20,13 @@ const EventComponent = () => {
 		}));
 	};
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files ? e.target.files[0] : null;
-		setNewEvent((prev) => ({
-			...prev,
-			image: file,
-		}));
-	};
+	// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const file = e.target.files ? e.target.files[0] : null;
+	// 	setNewEvent((prev) => ({
+	// 		...prev,
+	// 		image: file,
+	// 	}));
+	// };
 
 	return (
 		<div>
